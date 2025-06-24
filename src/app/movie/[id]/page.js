@@ -1,6 +1,8 @@
 import React from 'react';
 import MovieDetails from '@/components/details/MovieDetails';
 import { notFound } from 'next/navigation';
+import BackButton from '@/components/common/BackButton';
+import { TMDB_IMAGE_BASE_URL } from '@/lib/utils/constants';
 
 async function getMovieData(id) {
   // Fetch from the absolute URL on the server
@@ -30,6 +32,15 @@ export async function generateMetadata({ params }) {
     return {
         title: `${movie.title} - MovieBarn`,
         description: movie.overview,
+        openGraph: {
+            title: `${movie.title} - MovieBarn`,
+            description: movie.overview,
+            images: [
+                {
+                    url: movie.poster_path ? `${TMDB_IMAGE_BASE_URL}w500${movie.poster_path}` : '/images/og-image.svg',
+                }
+            ]
+        }
     };
 }
 
@@ -39,6 +50,7 @@ export default async function MoviePage({ params }) {
 
   return (
     <div>
+      <BackButton />
       <MovieDetails movie={movie} />
     </div>
   );
