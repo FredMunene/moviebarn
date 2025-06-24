@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import SearchBar from '@/components/search/SearchBar';
 import SearchResults from '@/components/search/SearchResults';
@@ -12,12 +12,15 @@ export default function SearchPage() {
   const initialQuery = searchParams.get('q') || '';
   
   const { query, results, loading, error, search, clearSearch } = useSearch();
+  const initialLoad = useRef(true);
 
   useEffect(() => {
-    if (initialQuery) {
+    // Only run this on initial load
+    if (initialLoad.current) {
       search(initialQuery);
+      initialLoad.current = false;
     }
-  }, []); 
+  }, [initialQuery, search]); 
 
   const handleSearch = (searchQuery) => {
     search(searchQuery);

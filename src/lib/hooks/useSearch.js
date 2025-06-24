@@ -9,19 +9,20 @@ export const useSearch = () => {
   const [error, setError] = useState(null);
 
   const search = useCallback(async (searchQuery) => {
-    if (searchQuery.trim() === '') {
-      setResults([]);
-      setQuery('');
-      setLoading(false);
-      return;
-    }
+    const isNewSearch = searchQuery.trim() !== query;
+    const isClearing = searchQuery.trim() === '';
     
-    setQuery(searchQuery);
+    setQuery(searchQuery.trim());
     setLoading(true);
     setError(null);
+    
+    let endpoint = `/api/movies/search?q=${encodeURIComponent(searchQuery.trim())}`;
+    if (isClearing) {
+      endpoint = `/api/movies/trending`;
+    }
 
     try {
-      const response = await fetch(`/api/movies/search?q=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(endpoint);
       
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -35,13 +36,12 @@ export const useSearch = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [query]);
 
   const clearSearch = useCallback(() => {
-    setQuery('');
-    setResults([]);
-    setError(null);
-  }, []);
+    // Now, clearing the search will trigger a fetch for popular movies
+    search('');
+  }, [search]);
 
   return { query, results, loading, error, search, clearSearch };
 }; 

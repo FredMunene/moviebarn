@@ -1,12 +1,13 @@
 'use client';
 
 import React from 'react';
-import Loading from '../ui/Loading';
 import ContentGrid from '../content/ContentGrid';
 import NoResults from '../common/NoResults';
 
 const SearchResults = ({ results, loading, error, query }) => {
-  if (loading && (!results || results.length === 0)) {
+  const isLoading = loading && (!results || results.length === 0);
+
+  if (isLoading) {
     return <ContentGrid loading={true} />;
   }
 
@@ -14,15 +15,21 @@ const SearchResults = ({ results, loading, error, query }) => {
     return <p className="text-red-500 text-center">Error: {error}</p>;
   }
 
-  if (!query) {
-    return <p className="text-gray-500 text-center">Start by searching for a movie or TV show.</p>
+  if (results.length === 0) {
+      if (query) {
+        return <NoResults searchQuery={query} />;
+      }
+      return <p className="text-gray-500 text-center">Start by searching for a movie or TV show.</p>
   }
 
-  if (results.length === 0 && query) {
-    return <NoResults searchQuery={query} />;
-  }
+  const gridTitle = query ? `Results for "${query}"` : "Popular Movies";
 
-  return <ContentGrid items={results} loading={loading} />;
+  return (
+    <div>
+        <h2 className="text-2xl font-bold mb-4">{gridTitle}</h2>
+        <ContentGrid items={results} loading={loading} />
+    </div>
+  );
 };
 
 export default SearchResults; 
