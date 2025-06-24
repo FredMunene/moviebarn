@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geist.className} min-h-screen flex flex-col`}>
-        <header className="bg-brand-900 text-white p-4">
+        <header className="bg-brand-900 text-black p-4">
           <nav className="container mx-auto flex items-center justify-between">
             <Link href="/" className="text-xl font-bold">
               MovieBarn
