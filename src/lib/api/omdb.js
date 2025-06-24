@@ -1,7 +1,7 @@
 import client from './client';
 
 const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
-const BASE_URL = 'https://www.omdbapi.com';
+const BASE_URL = 'http://www.omdbapi.com';
 
 export const omdb = {
   getOMDBDetails(imdbId) {
