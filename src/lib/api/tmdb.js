@@ -15,10 +15,18 @@ export const tmdb = {
   },
 
   getMovieDetails(id) {
-    return client.get(`${BASE_URL}/movie/${id}`, tmdbOptions);
+    return client.get(`${BASE_URL}/movie/${id}?append_to_response=credits`, tmdbOptions);
+  },
+
+  getTVShowDetails(id) {
+    return client.get(`${BASE_URL}/tv/${id}?append_to_response=credits`, tmdbOptions);
   },
 
   getTrendingMovies() {
-    return client.get(`${BASE_URL}/trending/movie/week`, tmdbOptions);
+    return client.get(`${BASE_URL}/movie/popular`, tmdbOptions);
+  },
+
+  getTrendingTVShows() {
+    return client.get(`${BASE_URL}/discover/tv?sort_by=popularity.desc`, tmdbOptions);
   },
 }; 
