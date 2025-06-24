@@ -6,12 +6,14 @@ const BASE_URL = 'https://api.themoviedb.org/3';
 const tmdbOptions = {
   headers: {
     Authorization: `Bearer ${API_KEY}`,
+    'Content-Type': 'application/json',
   },
 };
 
 export const tmdb = {
   searchMovies(query) {
-    return client.get(`${BASE_URL}/search/movie?query=${encodeURIComponent(query)}`, tmdbOptions);
+    if (!query) return Promise.resolve({ results: [] });
+    return client.get(`${BASE_URL}/search/multi?query=${encodeURIComponent(query)}`, tmdbOptions);
   },
 
   getMovieDetails(id) {
