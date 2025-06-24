@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { TMDB_IMAGE_BASE_URL, TMDB_POSTER_SIZE_W500, PLACEHOLDER_TV_POSTER } from '@/lib/utils/constants';
 import Rating from '../ui/Rating';
 import CastList from './CastList';
+import WatchlistButton from '../watchlist/WatchlistButton';
 
 const TVDetails = ({ tvShow }) => {
   const {
@@ -48,6 +49,8 @@ const TVDetails = ({ tvShow }) => {
           <Rating rating={vote_average} maxRating={10} size="large" />
           <span className="ml-2 text-xl font-bold">{vote_average.toFixed(1)}/10</span>
         </div>
+
+        <WatchlistButton item={tvShow} className="my-4" />
 
         <h2 className="text-2xl font-semibold mt-6 mb-2">Overview</h2>
         <p className="text-lg">{overview}</p>
