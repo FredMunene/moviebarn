@@ -1,12 +1,11 @@
 import React from 'react';
 import TrendingCarousel from '@/components/content/TrendingCarousel';
 import HeroSearch from '@/components/search/HeroSearch';
+import { tmdb } from '@/lib/api/tmdb';
 
 async function getTrendingMovies() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/movies/trending`, { next: { revalidate: 3600 } });
-    if (!res.ok) return [];
-    const data = await res.json();
+    const data = await tmdb.getTrendingMovies();
     return data.results || [];
   } catch (error) {
     console.error("Failed to fetch trending movies:", error);
@@ -16,9 +15,7 @@ async function getTrendingMovies() {
 
 async function getTrendingTVShows() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/tv/trending`, { next: { revalidate: 3600 } });
-    if (!res.ok) return [];
-    const data = await res.json();
+    const data = await tmdb.getTrendingTVShows();
     return data.results || [];
   } catch (error) {
     console.error("Failed to fetch trending TV shows:", error);

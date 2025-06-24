@@ -5,7 +5,7 @@ import { TMDB_IMAGE_BASE_URL } from '@/lib/utils/constants';
 // A smaller poster size is better for profile pictures
 const TMDB_PROFILE_SIZE_W185 = 'w185';
 // We'll assume a generic person placeholder for now
-const PLACEHOLDER_PERSON = '/images/placeholder-person.jpg';
+const PLACEHOLDER_PERSON = '/images/placeholder-person.svg';
 
 const CastList = ({ cast }) => {
   // Show only the top 15 billed cast members for brevity

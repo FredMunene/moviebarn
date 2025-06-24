@@ -4,6 +4,7 @@ import { TMDB_IMAGE_BASE_URL, TMDB_POSTER_SIZE_W500, PLACEHOLDER_MOVIE_POSTER } 
 import Rating from '../ui/Rating';
 import { formatRuntime, formatCurrency } from '@/lib/utils/formatters';
 import CastList from './CastList'; 
+import WatchlistButton from '../watchlist/WatchlistButton';
 
 const MovieDetails = ({ movie }) => {
   const {
@@ -48,6 +49,8 @@ const MovieDetails = ({ movie }) => {
           <span className="ml-2 text-xl font-bold">{vote_average.toFixed(1)}/10</span>
         </div>
         
+        <WatchlistButton item={movie} className="my-4" />
+
         <h2 className="text-2xl font-semibold mt-6 mb-2">Overview</h2>
         <p className="text-lg">{overview}</p>
 

@@ -3,25 +3,27 @@ import TVDetails from '@/components/details/TVDetails';
 import { notFound } from 'next/navigation';
 import BackButton from '@/components/common/BackButton';
 import { TMDB_IMAGE_BASE_URL } from '@/lib/utils/constants';
+import { tmdb } from '@/lib/api/tmdb';
 
 async function getTVData(id) {
-  // Fetch from the absolute URL on the server
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/tv/${id}`, {
-    cache: 'force-cache',
-  });
-
-  if (!res.ok) {
-    if (res.status === 404) {
-      notFound();
+    try {
+        const tvShowDetails = await tmdb.getTVShowDetails(id);
+        return tvShowDetails;
+    } catch (error) {
+        if (error.response?.status === 404) {
+            notFound();
+        }
+        console.error(`Failed to fetch data for TV show ${id}:`, error);
+        return null;
     }
-    throw new Error('Failed to fetch TV show data');
-  }
-
-  return res.json();
 }
 
-export async function generateMetadata({ params }) {
-    const tvShow = await getTVData(params.id).catch(() => null);
+export async function generateMetadata(props) {
+    const id = props.params.id;
+    if (!id) {
+        return { title: 'TV Show Not Found' };
+    }
+    const tvShow = await getTVData(id).catch(() => null);
     if (!tvShow) {
         return {
             title: 'TV Show Not Found',
@@ -42,8 +44,13 @@ export async function generateMetadata({ params }) {
     };
 }
 
-export default async function TVPage({ params }) {
-  const tvShow = await getTVData(params.id);
+export default async function TVPage(props) {
+  const id = props.params.id;
+  const tvShow = await getTVData(id);
+
+  if (!tvShow) {
+    notFound();
+  }
 
   return (
     <div>
